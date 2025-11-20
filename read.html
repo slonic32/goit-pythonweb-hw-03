@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Повідомлення</title>
+  </head>
+  <body>
+    <h2>Отримані Повідомлення</h2>
+    <ul>
+      {% for msg in messages %}
+      <li>
+        {{ msg.time }}<br />
+        {{ msg.username }}: {{ msg.message }}
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
