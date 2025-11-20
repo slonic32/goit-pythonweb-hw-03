@@ -11,13 +11,13 @@ from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader("."))
 
 
-DATA_FILE = "storage/data.json"
+DATA_FILE = "./storage/data.json"
 
 
 class HttpHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         pr_url = urllib.parse.urlparse(self.path)
-        if pr_url.path == "/":
+        if pr_url.path == "/message":
             data = self.rfile.read(int(self.headers["Content-Length"]))
             print(data)
             data_parse = urllib.parse.unquote_plus(data.decode())
@@ -53,7 +53,6 @@ class HttpHandler(BaseHTTPRequestHandler):
 
             template = env.get_template("read.html")
             html = template.render(messages=messages_list)
-
             self.send_html(html)
         else:
             if pathlib.Path().joinpath(pr_url.path[1:]).exists():
@@ -83,7 +82,7 @@ class HttpHandler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        self.wfile.write(html)
+        self.wfile.write(html.encode("utf-8"))
 
     def read_message(self):
         with open(DATA_FILE, "r") as f:
